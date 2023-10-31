@@ -3,18 +3,18 @@
     "id": "dummyTable",
     "title": "Dummy Table",
     "order": 1,
-    "path": "./components/tabs/DummyTable.js"
+    "path": "./DummyTable"
   },
   {
     "id": "dummyChart",
     "title": "Dummy Chart",
     "order": 2,
-    "path": "./components/tabs/DummyChart.js"
+    "path": "./DummyChart"
   },
   {
     "id": "dummyList",
     "title": "Dummy List",
     "order": 0,
-    "path": "./components/tabs/DummyList.js"
+    "path": "./DummyList"
   }
 ]
