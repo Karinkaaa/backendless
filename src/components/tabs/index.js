@@ -1,21 +1,25 @@
-import { Box, Container, Tab, Tabs } from "@mui/material";
-import React, { Suspense, lazy, useState } from "react";
-import { Loading } from "../loading";
-import { NoData } from "../noData";
+import { Box, Tab, Tabs } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
+import { DefaultRoute } from "../routes/DefaultRoute";
+import { InvalidRoute } from "../routes/InvalidRoute";
+import { LazyComponent } from "./LazyComponent";
 import tabs from "./tabs.json";
 
 export const AllTabs = () => {
-  const sortedTabs = tabs.sort((a, b) => a.order - b.order);
-  const [currentTab, setCurrentTab] = useState(sortedTabs[0]);
-  const TabComponent = lazy(() => import(`${currentTab.path}`));
+  const location = useLocation();
+  const currentPath = location.pathname.substring(1);
 
-  if (sortedTabs.length === 0) {
-    return <NoData />;
-  }
+  const sortedTabs = tabs.sort((a, b) => a.order - b.order);
+  const [currentTab, setCurrentTab] = useState(currentPath);
 
   const handleChange = (event, newValue) => {
     setCurrentTab(newValue);
   };
+
+  useEffect(() => {
+    setCurrentTab(currentPath);
+  }, [currentPath]);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -26,14 +30,26 @@ export const AllTabs = () => {
         indicatorColor="secondary"
       >
         {sortedTabs.map((tab) => (
-          <Tab key={tab.id} value={tab} label={tab.title} />
+          <Tab
+            key={tab.id}
+            value={tab.id}
+            label={tab.title}
+            component={Link}
+            to={tab.id}
+          />
         ))}
       </Tabs>
-      <Container sx={{ height: "100%", mt: 10, textAlign: "center" }}>
-        <Suspense fallback={<Loading />}>
-          <TabComponent />
-        </Suspense>
-      </Container>
+      <Routes>
+        {sortedTabs.map((tab) => (
+          <Route
+            key={tab.id}
+            path={tab.id}
+            element={<LazyComponent path={tab.path} />}
+          />
+        ))}
+        <Route path="/" element={<DefaultRoute tabs={sortedTabs} />} />
+        <Route path="*" element={<InvalidRoute tabs={sortedTabs} />} />
+      </Routes>
     </Box>
   );
 };

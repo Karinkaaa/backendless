@@ -1,4 +1,4 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React from "react";
 
 function createData(name, calories, fat, carbs, protein) {
@@ -14,7 +14,7 @@ const rows = [
 ];
 
 const DummyTable = () => (
-  <TableContainer component={Paper}>
+  <TableContainer component={Container}>
     <Table sx={{ minWidth: 650 }}>
       <TableHead sx={{ bgcolor: "secondary.light" }}>
         <TableRow>
